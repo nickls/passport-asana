@@ -1,0 +1,30 @@
+{
+  "name": "passport-asana",
+  "version": "0.0.1",
+  "description": "Asana API OAuth2 authentication strategy for Passport",
+  "main": "./lib/passport-asana",
+  "dependencies": {
+    "pkginfo": "0.2.x",
+    "passport-oauth": ">= 0.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nickls/passport-asana.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nickls/passport-asana/issues"
+  },
+  "engines": { "node": ">= 0.4.0" },
+  "keywords": [
+    "passport",
+    "asana",
+    "api",
+    "auth",
+    "oauth",
+    "authentication",
+    "identity"
+  ],
+  "author": "Nick Lane-Smith <nlanesmith@gmail.com>",
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}
