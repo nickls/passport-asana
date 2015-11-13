@@ -5,8 +5,8 @@ var express = require('express')
   , util = require('util')
   , AsanaStrategy = require('passport-asana').Strategy;
 
-var ASANA_CLIENT_ID = "";
-var ASANA_CLIENT_SECRET = "";
+var ASANA_CLIENT_ID = "--CLIENT ID HERE --";
+var ASANA_CLIENT_SECRET = "--CLIENT SECRET HERE --";
 
 
 // Passport session setup.
