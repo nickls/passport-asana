@@ -21,7 +21,7 @@ OAuth tokens.  The strategy requires a `verify` callback, which accepts these
 credentials and calls `done` providing a user, as well as `options` specifying a
 client id , client secret, and callback URL.
 
-    passport.use(new AsanaStrategy({
+    passport.use('Asana', new AsanaStrategy({
         clientID: '1234567890123',
         clientSecret: '5ddf23ae77cbe6bff02430f8f37c4900'
         callbackURL: 'https://www.example.com/auth/asana/callback'
@@ -41,12 +41,7 @@ authenticate requests.
 For example, as route middleware in an [Express](http://expressjs.com/)
 application:
 
-    app.get('/auth/asana',
-      passport.authenticate('Asana'),
-      function(req, res){
-        // The request will be redirected to asana.com for authentication, so this
-        // function will not be called.
-      });
+    app.get('/auth/asana', passport.authenticate('Asana', { failureRedirect: '/' }));
 
     app.get('/auth/asana/callback',
       passport.authenticate('Asana', { failureRedirect: '/login' }),
@@ -60,3 +55,4 @@ application:
 
 ## Thanks
   - [Jared Hanson](https://github.com/jaredhanson)
+  - [Scott Hillman](https://github.com/hillmanov)
