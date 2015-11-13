@@ -1,10 +1,12 @@
 var express = require('express')
+  , session = require('express-session')
+  , errorhandler = require('errorhandler')
   , passport = require('passport')
   , util = require('util')
   , AsanaStrategy = require('passport-asana').Strategy;
 
-var ASANA_CLIENT_ID = "--insert-asana-app-id-here--";
-var ASANA_CLIENT_SECRET = "--insert-asana-app-secret-here--";
+var ASANA_CLIENT_ID = "";
+var ASANA_CLIENT_SECRET = "";
 
 
 // Passport session setup.
@@ -26,13 +28,14 @@ passport.deserializeUser(function(obj, done) {
 //   Strategies in Passport require a `verify` function, which accept
 //   credentials (in this case, an accessToken, refreshToken, and Asana
 //   profile), and invoke a callback with a user object.
-passport.use(new AsanaStrategy({
+passport.use('Asana', new AsanaStrategy({
     clientID: ASANA_CLIENT_ID,
     clientSecret: ASANA_CLIENT_SECRET,
     callbackURL: "http://127.0.0.1:4000/auth/asana/callback",
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
+    console.warn(accessToken, refreshToken, profile);
     process.nextTick(function () {
       
       // To keep the example simple, the user's Asana profile is returned to
@@ -51,17 +54,16 @@ var app = express();
 app.set('port', process.env.PORT || 4000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-app.use(express.logger('dev'));
-app.use(express.errorHandler());
-app.use(express.methodOverride());
-app.use(express.cookieParser('insert-some-entropy-here'));
-app.use(express.session());
+// app.use(express.logger('dev'));
+app.use(errorhandler());
+// app.use(express.methodOverride());
+// app.use(express.cookieParser('insert-some-entropy-here'));
+app.use(session({secret: 'meow mix'}));
 
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(app.router);
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res){
@@ -82,13 +84,17 @@ app.get('/login', function(req, res){
 //   redirecting the user to asana.com.  After authorization, asana.com will
 //   redirect the user back to this application at /auth/asana/callback
 
-app.get('/auth/asana',
-  passport.authenticate('Asana'),
-  function(req, res){
-    // The request will be redirected to Asana authentication, so this
-    // function will not be called.
-    console.log('you should not get here!')
-  });
+app.get('/auth/asana', passport.authenticate('Asana', { failureRedirect: '/' }));
+
+
+
+// app.get('/auth/asana',
+//   passport.authenticate('Asana'),
+//   function(req, res){
+//     // The request will be redirected to Asana authentication, so this
+//     // function will not be called.
+//     console.log('you should not get here!')
+//   });
 
 // GET /auth/asana/callback
 //   Use passport.authenticate() as route middleware to authenticate the
